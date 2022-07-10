@@ -4,6 +4,8 @@ const htmlElements = {
             [document.querySelector(".square-2-1"), document.querySelector(".square-2-2"), document.querySelector(".square-2-3")],
             [document.querySelector(".square-3-1"), document.querySelector(".square-3-2"), document.querySelector(".square-3-3")]],
     turnDisplay: document.querySelector(".turn-display"),
+    square: document.querySelectorAll(".square"),
+    resetButton: document.querySelector(".reset-button")
 }
 
 const Player = (sign, turn) => {
@@ -23,7 +25,7 @@ const Player = (sign, turn) => {
 }
 
 const GameBoard = (() => {
-    const board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     let occupiedSquares = 0;
 
     const playerX = Player("X", true);
@@ -141,8 +143,23 @@ const GameBoard = (() => {
         }
     }
 
+    const setBoard = (array) => {
+        board = array;
+    }
+
+    const getBoard = () => {
+        return board;
+    }
+
+    const resetGame = () => {
+        htmlElements.square.forEach(element => {
+            element.textContent = "";
+        });
+        setBoard([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+    }
+
     return {
-        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, 
+        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, resetGame, setBoard, getBoard,
     }
 })();
 
@@ -153,6 +170,8 @@ for (let i = 0; i < htmlElements.squares.length; i++){
         });
     }
 }
+
+htmlElements.resetButton.addEventListener("click", GameBoard.resetGame);
 
 
 console.log(GameBoard.checkWinner());
