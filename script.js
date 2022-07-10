@@ -35,9 +35,7 @@ const GameBoard = (() => {
             board[row][col] = player.getSign();
             htmlElements.squares[row][col].textContent = player.getSign();
             occupiedSquares++;
-        }
-        if (isGameDone()){
-            const winner = checkWinner();
+            console.log(checkWinner());
         }
     }
 
@@ -111,12 +109,14 @@ const GameBoard = (() => {
             }
         }
         firstSquare = board[2][0];
-        count = 1
-        for (let i = board.length - 2; i >= 0; i--){
-            if(board[i][i] == firstSquare){
+        count = 1;
+        for (let i = board.length - 2, j = board.length - 2; i >= 0, j < board.length; i--, j++){
+            console.log(i  + " " + j + " " + board[i][j])
+            if(board[i][j] == firstSquare){
                 count++;
+                console.log(count)
                 if (count == 3){
-                    return board[i][i];
+                    return board[i][j];
                 }
             }
         }
@@ -128,19 +128,21 @@ const GameBoard = (() => {
         col = colCheck();
         diag = diagCheck();
 
-        if (row == "" && col == "" && diag == ""){
+        if (row == "" && col == "" && diag == "" && isGameDone()){
             return "Tie";
         } else{
             if(row == "X" || col == "X" || diag == "X"){
                 return playerX;
-            } else{
+            } else if (row == "O" || col == "O" || diag == "O"){
                 return playerO;
+            } else{
+                return false;
             }
         }
     }
 
     return {
-        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn
+        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, 
     }
 })();
 

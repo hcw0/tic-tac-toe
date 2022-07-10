@@ -28,7 +28,7 @@ h2 {
 
 .board {
     display: grid;
-    width: 35vw;
+    width: 32vw;
     height: 60vh;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
