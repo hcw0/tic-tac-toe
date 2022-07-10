@@ -5,39 +5,63 @@ const htmlElements = {
             [document.querySelector(".square-3-1"), document.querySelector(".square-3-2"), document.querySelector(".square-3-3")]]
 }
 
+const Player = (sign, turn) => {
+    const playerSign = sign;
+    let playerTurn = turn;
+
+    const getTurn = () => playerTurn;
+    const getSign = () => playerSign;
+    const toggleTurn = () => {
+        if (playerTurn){
+            playerTurn = false;
+        } else{
+            playerTurn = true;
+        }
+    }
+    return {getSign, getTurn, toggleTurn};
+}
 
 const GameBoard = (() => {
     const board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    
+    let occupiedSquares = 0;
 
-    const makeMove = (player, row, col) => {
-        if(isMoveValid(row, col) == true){
-            board[row][col] = player;
+    const playerX = Player("X", true);
+    const playerO = Player("O", false);
+
+    const makeMove = (row, col) => {
+        if(isMoveValid(row, col)){
+            player = playerTurn();
+            board[row][col] = player.getSign();
             htmlElements.squares[row][col].textContent = player.getSign();
+            occupiedSquares++;
         }
         if (isGameDone()){
-
+            const winner = checkWinner();
         }
-
     }
 
     const isMoveValid = (row, col) => {
-        if (row > 3 || row < 0 || col > 3 || col < 0 || board[row][col] == 0){
+        if (row > 3 || row < 0 || col > 3 || col < 0 || board[row][col] != 0){
             return false;
         } else{
             return true;
         }
     }
 
-    const isGameDone = () => {
-        for (let i = 0; i < board.length; i++){
-            for(let j = 0; i < board[0].length; j++){
-                if (board[i][j] == 0){
-                    return false
-                }
-            }
+    const playerTurn = () => {
+        if (playerX.getTurn()){
+            playerX.toggleTurn();
+            playerO.toggleTurn();
+            return playerX;
+        } else{
+            playerO.toggleTurn();
+            playerX.toggleTurn();
+            return playerO;
         }
-        return true
+    }
+
+    const isGameDone = () => {
+        return occupiedSquares >= 9;
     }
 
     const rowCheck = () => {
@@ -95,6 +119,7 @@ const GameBoard = (() => {
         }
         return "";
     }
+
     const checkWinner = () => {
         row = rowCheck();
         col = colCheck();
@@ -111,21 +136,20 @@ const GameBoard = (() => {
         }
     }
 
-    
-
     return {
-        makeMove, isMoveValid, isGameDone, checkWinner
+        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn
     }
 })();
 
-const Player = (sign) => {
-    const getSign = () => sign;
-    return {getSign};
+for (let i = 0; i < htmlElements.squares.length; i++){
+    for (let j = 0; j < htmlElements.squares[0].length; j++){
+        htmlElements.squares[i][j].addEventListener("click", () => {
+            GameBoard.makeMove(i, j);
+        });
+    }
 }
 
-const playerX = Player("X");
-const playerO = Player("O");
 
-console.log(GameBoard.checkWinner().getSign());
+console.log(GameBoard.checkWinner());
 
 
