@@ -206,8 +206,3 @@ for (let i = 0; i < htmlElements.squares.length; i++){
 }
 
 htmlElements.resetButton.addEventListener("click", GameBoard.resetGame);
-
-
-console.log(GameBoard.checkWinner());
-
-
