@@ -14,6 +14,8 @@ const Player = (sign, turn) => {
 
     const getTurn = () => playerTurn;
     const getSign = () => playerSign;
+
+    const setTurn = newTurn => playerTurn = newTurn;
     const toggleTurn = () => {
         if (playerTurn){
             playerTurn = false;
@@ -21,7 +23,7 @@ const Player = (sign, turn) => {
             playerTurn = true;
         }
     }
-    return {getSign, getTurn, toggleTurn};
+    return {getSign, getTurn, toggleTurn, setTurn};
 }
 
 const GameBoard = (() => {
@@ -32,6 +34,9 @@ const GameBoard = (() => {
     const playerO = Player("O", false);
 
     const makeMove = (row, col) => {
+        if (isGameDone()){
+
+        }
         if(isMoveValid(row, col)){
             player = playerTurn();
             board[row][col] = player.getSign();
@@ -40,9 +45,9 @@ const GameBoard = (() => {
             if (checkWinner() != false){
                 winner = checkWinner();
                 if (winner == "Tie"){
-                    alert("Tie");
+                    htmlElements.turnDisplay.textContent = "Tie!"
                 } else{
-                    alert("Player" + winner.getSign() + " wins");
+                    htmlElements.turnDisplay.textContent = "Player" + " " + winner.getSign() + " wins";
                 }
             }
         }
@@ -178,10 +183,14 @@ const GameBoard = (() => {
         });
         setBoard([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
         setOccupiedSquares(0);
+        htmlElements.turnDisplay.textContent = "X's turn"
+        playerX.setTurn(true);
+        playerO.setTurn(false);
     }
 
     return {
-        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, resetGame, setBoard, getBoard, setOccupiedSquares, getOccupiedSquares, rowCheck, diagCheck, colCheck
+        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, resetGame, 
+        setBoard, getBoard, setOccupiedSquares, getOccupiedSquares, rowCheck, diagCheck, colCheck,
     }
 })();
 
