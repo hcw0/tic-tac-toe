@@ -2,7 +2,8 @@ const htmlElements = {
     board: document.querySelector(".board"),
     squares: [[document.querySelector(".square-1-1"), document.querySelector(".square-1-2"), document.querySelector(".square-1-3")], 
             [document.querySelector(".square-2-1"), document.querySelector(".square-2-2"), document.querySelector(".square-2-3")],
-            [document.querySelector(".square-3-1"), document.querySelector(".square-3-2"), document.querySelector(".square-3-3")]]
+            [document.querySelector(".square-3-1"), document.querySelector(".square-3-2"), document.querySelector(".square-3-3")]],
+    turnDisplay: document.querySelector(".turn-display"),
 }
 
 const Player = (sign, turn) => {
@@ -52,10 +53,12 @@ const GameBoard = (() => {
         if (playerX.getTurn()){
             playerX.toggleTurn();
             playerO.toggleTurn();
+            htmlElements.turnDisplay.textContent = playerO.getSign() + "'s turn";
             return playerX;
         } else{
             playerO.toggleTurn();
             playerX.toggleTurn();
+            htmlElements.turnDisplay.textContent = playerX.getSign() + "'s turn";
             return playerO;
         }
     }
