@@ -29,20 +29,22 @@ const Player = (sign, turn) => {
 const GameBoard = (() => {
     let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     let occupiedSquares = 0;
+    let gameFinished = false;
 
     const playerX = Player("X", true);
     const playerO = Player("O", false);
 
     const makeMove = (row, col) => {
         if (isGameDone()){
+        } else if (gameFinished){
 
-        }
-        if(isMoveValid(row, col)){
+        } else if(isMoveValid(row, col)){
             player = playerTurn();
             board[row][col] = player.getSign();
             htmlElements.squares[row][col].textContent = player.getSign();
             occupiedSquares++;
             if (checkWinner() != false){
+                gameFinished = true;
                 winner = checkWinner();
                 if (winner == "Tie"){
                     htmlElements.turnDisplay.textContent = "Tie!"
@@ -186,6 +188,7 @@ const GameBoard = (() => {
         htmlElements.turnDisplay.textContent = "X's turn"
         playerX.setTurn(true);
         playerO.setTurn(false);
+        gameFinished = false;
     }
 
     return {
