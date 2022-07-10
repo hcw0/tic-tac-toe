@@ -37,7 +37,14 @@ const GameBoard = (() => {
             board[row][col] = player.getSign();
             htmlElements.squares[row][col].textContent = player.getSign();
             occupiedSquares++;
-            console.log(checkWinner());
+            if (checkWinner() != false){
+                winner = checkWinner();
+                if (winner == "Tie"){
+                    alert("Tie");
+                } else{
+                    alert("Player" + winner.getSign() + " wins");
+                }
+            }
         }
     }
 
@@ -71,11 +78,13 @@ const GameBoard = (() => {
         for (let row = 0; row < board.length; row++){
             let firstSquare = board[row][0];
             let count = 1;
-            for(let col = 1; col < board[0].length; col++){
-                if (board[row][col] == firstSquare){
-                    count++;
-                    if (count == 3){
-                        return board[row][col];
+            if (firstSquare != 0){
+                for(let col = 1; col < board[0].length; col++){
+                    if (board[row][col] == firstSquare){
+                        count++;
+                        if (count == 3){
+                            return board[row][col];
+                        }
                     }
                 }
             }
@@ -87,11 +96,13 @@ const GameBoard = (() => {
         for (let col = 0; col < board[0].length; col++){
             let firstSquare = board[0][col];
             let count = 1;
-            for(let row = 1; row < board.length; row++){
-                if (board[row][col] == firstSquare){
-                    count++;
-                    if (count == 3){
-                        return board[row][col]
+            if(firstSquare != 0){
+                for(let row = 1; row < board.length; row++){
+                    if (board[row][col] == firstSquare){
+                        count++;
+                        if (count == 3){
+                            return board[row][col]
+                        }
                     }
                 }
             }
@@ -103,22 +114,24 @@ const GameBoard = (() => {
         let firstSquare = board[0][0];
         let count = 1;
         for (let i = 1; i < board.length; i++){
-            if (board[i][i] == firstSquare){
-                count ++;
-                if (count == 3){
-                    return board[i][i];
+            if (firstSquare != 0){
+                if (board[i][i] == firstSquare){
+                    count ++;
+                    if (count == 3){
+                        return board[i][i];
+                    }
                 }
             }
         }
         firstSquare = board[2][0];
         count = 1;
         for (let i = board.length - 2, j = board.length - 2; i >= 0, j < board.length; i--, j++){
-            console.log(i  + " " + j + " " + board[i][j])
-            if(board[i][j] == firstSquare){
-                count++;
-                console.log(count)
-                if (count == 3){
-                    return board[i][j];
+            if (firstSquare != 0){
+                if(board[i][j] == firstSquare){
+                    count++;
+                    if (count == 3){
+                        return board[i][j];
+                    }
                 }
             }
         }
@@ -147,8 +160,16 @@ const GameBoard = (() => {
         board = array;
     }
 
+    const setOccupiedSquares = number => {
+        occupiedSquares = number;
+    }
+
     const getBoard = () => {
         return board;
+    }
+
+    const getOccupiedSquares = () => {
+        return occupiedSquares;
     }
 
     const resetGame = () => {
@@ -156,10 +177,11 @@ const GameBoard = (() => {
             element.textContent = "";
         });
         setBoard([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+        setOccupiedSquares(0);
     }
 
     return {
-        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, resetGame, setBoard, getBoard,
+        makeMove, isMoveValid, isGameDone, checkWinner, playerTurn, resetGame, setBoard, getBoard, setOccupiedSquares, getOccupiedSquares, rowCheck, diagCheck, colCheck
     }
 })();
 
