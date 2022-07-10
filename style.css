@@ -1,0 +1,13 @@
+* {
+    outline: 2px solid red;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+    font-size: 4rem;
+    text-align: center;
+}
